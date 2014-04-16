@@ -1,12 +1,14 @@
 (function (global) {
 
-  global.parse = global.decode = decode
-  global.stringify = global.encode = encode
+  global.iniParser = {}
 
-  global.safe = safe
-  global.unsafe = unsafe
+  global.iniParser.parse = global.iniParser.decode = decode
+  global.iniParser.stringify = global.iniParser.encode = encode
 
-  global.eol = global.process ? (global.process.platform === "win32" ? "\r\n" : "\n") : "\n"
+  global.iniParser.safe = safe
+  global.iniParser.unsafe = unsafe
+
+  global.iniParser.eol = global.process ? (global.process.platform === "win32" ? "\r\n" : "\n") : "\n"
 
   function encode (obj, section) {
     var children = []
@@ -22,19 +24,19 @@
       else if (val && typeof val === "object") {
         children.push(k)
       } else {
-        out += safe(k) + " = " + safe(val) + global.eol
+        out += safe(k) + " = " + safe(val) + global.iniParser.eol
       }
     })
 
     if (section && out.length) {
-      out = "[" + safe(section) + "]" + global.eol + out
+      out = "[" + safe(section) + "]" + global.iniParser.eol + out
     }
 
     children.forEach(function (k, _, __) {
       var nk = dotSplit(k).join('\\.')
       var child = encode(obj[k], (section ? section + "." : "") + nk)
       if (out.length && child.length) {
-        out += global.eol
+        out += global.iniParser.eol
       }
       out += child
     })
