@@ -6,7 +6,7 @@
   global.safe = safe
   global.unsafe = unsafe
 
-  global.eol = process ? (process.platform === "win32" ? "\r\n" : "\n") : "\n"
+  global.eol = global.process ? (global.process.platform === "win32" ? "\r\n" : "\n") : "\n"
 
   function encode (obj, section) {
     var children = []
