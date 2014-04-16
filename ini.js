@@ -5,7 +5,7 @@ exports.stringify = exports.encode = encode
 exports.safe = safe
 exports.unsafe = unsafe
 
-var eol = process.platform === "win32" ? "\r\n" : "\n"
+exports.eol = process ? (process.platform === "win32" ? "\r\n" : "\n") : "\n"
 
 function encode (obj, section) {
   var children = []
@@ -21,19 +21,19 @@ function encode (obj, section) {
     else if (val && typeof val === "object") {
       children.push(k)
     } else {
-      out += safe(k) + " = " + safe(val) + eol
+      out += safe(k) + " = " + safe(val) + exports.eol
     }
   })
 
   if (section && out.length) {
-    out = "[" + safe(section) + "]" + eol + out
+    out = "[" + safe(section) + "]" + exports.eol + out
   }
 
   children.forEach(function (k, _, __) {
     var nk = dotSplit(k).join('\\.')
     var child = encode(obj[k], (section ? section + "." : "") + nk)
     if (out.length && child.length) {
-      out += eol
+      out += exports.eol
     }
     out += child
   })
